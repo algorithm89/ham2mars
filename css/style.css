@@ -1,0 +1,162 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body & Background */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: url('../img/ham2marsBG.png') no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* Header */
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background: rgba(0, 0, 0, 0.5); /* Transparent black */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  width: 50px;
+  height: auto;
+}
+
+.site-header h1 {
+  font-size: 1.8rem;
+}
+
+/* Main Menu - Maneki Style */
+.main-menu {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin: 20px auto;
+}
+
+.main-menu ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 0;
+}
+
+.main-menu li a {
+  display: block;
+  padding: 12px 25px;
+  border-radius: 25px;
+  background: white;
+  color: black;
+  font-weight: bold;
+  font-family: 'Arial Black', sans-serif;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.main-menu li a:hover {
+  background: #f9c74f;
+  transform: scale(1.05);
+}
+
+/* Hero Section */
+.hero {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 20px 40px;
+  text-align: center;
+}
+
+.hero .main-image {
+  width: 70%;
+  max-width: 350px;
+  border-radius: 15px;
+  border: 5px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+
+.menu-toggle {
+  display: none;
+}
+
+/* Menu always visible on desktop */
+.main-menu ul {
+  display: flex;
+  gap: 15px;
+}
+
+/* Mobile version */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+    font-size: 1.8rem;
+    color: white;
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    z-index: 1001;
+  }
+
+  .main-menu ul {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.95);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .main-menu ul.show {
+    display: flex;
+  }
+
+  .main-menu li a {
+    color: white;
+    background: transparent;
+    font-size: 1rem;
+    padding: 10px 15px;
+    border-radius: 10px;
+  }
+
+  .main-menu li a:hover {
+    background: #f9c74f;
+    color: black;
+  }
+}
