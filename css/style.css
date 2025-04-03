@@ -86,17 +86,21 @@ body {
   font-weight: bold;
   border-right: 1px solid #ccc;
   transition: background 0.3s ease, color 0.3s ease;
-}
-
-.main-menu li:last-child a {
-  border-right: none;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.5); /* Shine effect */
 }
 
 .main-menu li a:hover,
 .main-menu li a.active {
   background: #33b5e5;
   color: white;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.5); /* More intense shine on hover */
 }
+
+.main-menu li:last-child a {
+  border-right: none;
+}
+
+
 
 
 /* Hero Section */
