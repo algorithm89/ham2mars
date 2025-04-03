@@ -5,6 +5,11 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: 'PriceDown';
+  src: url('fonts/Pricedown Bl.otf') format('opentype');
+}
+
 /* Body & Background */
 body {
   font-family: 'Segoe UI', sans-serif;
@@ -20,12 +25,15 @@ body {
 /* Header */
 .site-header {
   display: flex;
+  font-family: 'PriceDown', sans-serif;
+  font-size: 1.8rem;
   justify-content: space-between;
   align-items: center;
   padding: 15px 30px;
   background: rgba(0, 0, 0, 0.5); /* Transparent black */
   position: sticky;
   top: 0;
+
   z-index: 1000;
 }
 
@@ -41,45 +49,55 @@ body {
 }
 
 .site-header h1 {
-  font-size: 1.8rem;
+  font-family: 'PriceDown', sans-serif;
+  font-size: 2.8rem;
+  color: white; /* Make sure the text color is white */
+  text-shadow:
+          1px 1px 0 black,
+          -1px -1px 0 black,
+          1px -1px 0 black,
+          -1px 1px 0 black; /* Creates a black border around the text */
 }
-
-/* Main Menu - Maneki Style */
+/* Main Menu */
 .main-menu {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin: 20px auto;
+  width: 100%;
+  background: #f0f0f0;
+  box-shadow: inset 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .main-menu ul {
   list-style: none;
   display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
+  margin: 0;
   padding: 0;
+}
+
+.main-menu li {
+  flex: 1;
+  text-align: center;
 }
 
 .main-menu li a {
   display: block;
-  padding: 12px 25px;
-  border-radius: 25px;
-  background: white;
-  color: black;
-  font-weight: bold;
-  font-family: 'Arial Black', sans-serif;
-  font-size: 0.9rem;
-  text-transform: uppercase;
+  padding: 15px 0;
+  background: #f0f0f0;
+  color: #333;
   text-decoration: none;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-  transition: transform 0.2s ease, background 0.3s ease;
+  font-weight: bold;
+  border-right: 1px solid #ccc;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
-.main-menu li a:hover {
-  background: #f9c74f;
-  transform: scale(1.05);
+.main-menu li:last-child a {
+  border-right: none;
 }
+
+.main-menu li a:hover,
+.main-menu li a.active {
+  background: #33b5e5;
+  color: white;
+}
+
 
 /* Hero Section */
 .hero {
