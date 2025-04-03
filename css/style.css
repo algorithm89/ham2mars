@@ -139,65 +139,100 @@ body {
   display: flex;
   gap: 15px;
 }
+/* Mobile version */
 @media (max-width: 768px) {
   /* Compress background */
   body {
-    background-size: 150% auto; /* Adjust background size */
+    background: url('img/ham2marsBG.png') no-repeat center center fixed;
+    background-size: cover; /* Adjust background size */
+    display: flex;
+    justify-content: center; /* Center the text */
+    align-items: center; /* Center the content vertically */
+    min-height: 100vh; /* Ensure it covers the whole viewport */
+    color: white;
   }
 
+  /* Center the 'Ham to Mars' text in the middle */
+  .site-header h1 {
+    font-size: 2.5rem;
+    text-align: center;
+    z-index: 1; /* Ensure text is above the background */
+  }
+
+  /* Menu Styles */
   .site-header {
-    position: absolute; /* Change to absolute positioning */
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 1001;
   }
 
+  /* Hamburger menu icon */
+  .menu-toggle {
+    display: block;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    z-index: 1002; /* Ensure the toggle is on top */
+  }
+
+  /* Semi-transparent menu */
   .main-menu {
-    background: rgba(0, 0, 0, 0.5); /* Half-transparent background */
-    position: absolute; /* Position it under the header */
-    top: 60px; /* Adjust this value to push the menu down */
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+    position: absolute;
+    top: 60px; /* Position it just below the header */
     width: 100%;
-    height: calc(100vh - 60px); /* Cover the rest of the screen below the header */
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Center the menu items vertically */
+    height: calc(100vh - 60px); /* Make it take the rest of the screen */
+    display: none; /* Initially hidden */
+    z-index: 1000; /* Menu is below the toggle */
+    padding-top: 20px;
   }
 
   .main-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
-    flex-direction: column; /* Stack the menu items vertically */
+    flex-direction: column; /* Stack the items vertically */
     align-items: center;
-    padding: 20px;
-    gap: 15px;
   }
 
+  .main-menu li {
+    margin: 15px 0;
+  }
+
+  .main-menu li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
+    padding: 15px;
+    display: block;
+    text-align: center;
+  }
+
+  .main-menu li a:hover {
+    background-color: #f9c74f;
+    color: black;
+  }
+
+  /* Toggle to display the menu when clicked */
+  .main-menu.show {
+    display: flex;
+  }
+
+  /* Adjust menu for smaller screen sizes */
   .menu-toggle {
     display: block;
-    font-size: 1.8rem;
+    font-size: 2rem;
     color: white;
     cursor: pointer;
     position: absolute;
     top: 15px;
     right: 20px;
     z-index: 1002; /* Ensure the toggle is above everything else */
-  }
-
-  .main-menu li a {
-    color: white;
-    background: transparent;
-    font-size: 1rem;
-    padding: 10px 15px;
-    border-radius: 10px;
-  }
-
-  .main-menu li a:hover {
-    background: #f9c74f;
-    color: black;
-  }
-
-  .main-menu.show {
-    display: flex;
   }
 }
