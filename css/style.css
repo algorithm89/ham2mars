@@ -102,7 +102,7 @@ body {
 /* === Mobile Styles === */
 @media (max-width: 768px) {
   body {
-    background: url('../img/HamMobileVersion.png') no-repeat center top;
+    background: url('../img/MobileHam.jpg') no-repeat center top;
     background-size: cover;
     background-position-y: 10px; /* Shift image up to expose more under navbar */
   }
