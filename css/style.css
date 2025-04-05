@@ -9,6 +9,10 @@
 @font-face {
   font-family: 'PriceDown';
   src: url('../fonts/Pricedown Bl.otf') format('opentype');
+  src: url('../fonts/AmazDooMLeft.ttf') format('truetype');
+  src: url('../fonts/AmazDooMLeftOutline.ttf') format('truetype');
+  src: url('../fonts/AmazDooMRight.ttf') format('truetype');
+  src: url('../fonts/AmazDooMRightOutline.ttf') format('truetype');
 }
 
 /* === Base Body === */
