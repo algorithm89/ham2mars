@@ -1,238 +1,176 @@
-/* Reset */
+/* === Reset === */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* === Custom Font === */
 @font-face {
   font-family: 'PriceDown';
-  src: url('fonts/Pricedown Bl.otf') format('opentype');
+  src: url('../fonts/Pricedown Bl.otf') format('opentype');
 }
 
-/* Body & Background */
+/* === Base Body === */
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: url('../img/ham2marsBG.png') no-repeat center center fixed;
-  background-size: cover;
   color: white;
+  background: url('../img/ham2marsBG.png') no-repeat center top;
+  background-size: cover;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
 }
 
-/* Header */
-.site-header {
-  display: flex;
-  font-family: 'PriceDown', sans-serif;
-  font-size: 1.8rem;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 30px;
-  background: rgba(0, 0, 0, 0.5); /* Transparent black */
+.main-content {
+  padding-top: 120px; /* more space under navbar */
+  min-height: 100vh;
+}
+
+/* === Navbar === */
+.navbar {
+  background: black;
   position: sticky;
   top: 0;
-
   z-index: 1000;
 }
 
-.header-left {
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-title {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
 .logo {
-  width: 50px;
-  height: auto;
+  height: 70px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
 }
 
-.site-header h1 {
+.logo:hover {
+  transform: scale(1.1);
+}
+
+.logo-title h1 {
   font-family: 'PriceDown', sans-serif;
   font-size: 2.8rem;
-  color: white; /* Make sure the text color is white */
-  text-shadow:
-          1px 1px 0 black,
-          -1px -1px 0 black,
-          1px -1px 0 black,
-          -1px 1px 0 black; /* Creates a black border around the text */
-}
-/* Main Menu */
-.main-menu {
-  width: 100%;
-  background: #f0f0f0;
-  box-shadow: inset 0 -2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.main-menu ul {
-  list-style: none;
-  display: flex;
-  margin: 0;
-  padding: 0;
-}
-
-.main-menu li {
-  flex: 1;
-  text-align: center;
-}
-
-.main-menu li a {
-  display: block;
-  padding: 15px 0;
-  background: #f0f0f0;
-  color: #333;
-  text-decoration: none;
-  font-weight: bold;
-  border-right: 1px solid #ccc;
-  transition: background 0.3s ease, color 0.3s ease;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.5); /* Shine effect */
-}
-
-.main-menu li a:hover,
-.main-menu li a.active {
-  background: #33b5e5;
   color: white;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.5); /* More intense shine on hover */
+  line-height: 1;
+  margin: 0;
+  position: relative;
+  top: 2px;
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
 }
 
-.main-menu li:last-child a {
-  border-right: none;
+.logo-title h1:hover {
+  transform: scale(1.1);
+  text-shadow: 0 0 10px #33b5e5, 0 0 20px #33b5e5;
 }
 
-
-
-
-/* Hero Section */
-.hero {
-  flex-grow: 1;
+.menu {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 120px 20px 40px;
-  text-align: center;
+  gap: 60px;
+  margin-left: auto;
+  padding-right: 100px;
 }
 
-.hero .main-image {
-  width: 70%;
-  max-width: 350px;
-  border-radius: 15px;
-  border: 5px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-  margin-bottom: 10px;
+.menu a {
+  color: white;
+  text-decoration: none;
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: 'PriceDown', sans-serif;
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 
-.hero p {
-  font-size: 1.2rem;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 10px 20px;
-  border-radius: 10px;
+.menu a:hover {
+  transform: scale(1.2);
+  color: #33b5e5;
 }
 
-.menu-toggle {
+.hamburger {
   display: none;
 }
 
-/* Menu always visible on desktop */
-.main-menu ul {
-  display: flex;
-  gap: 15px;
-}
-/* Mobile version */
+/* === Mobile Styles === */
 @media (max-width: 768px) {
-  /* Compress background */
   body {
-    background: url('img/ham2marsBG.png') no-repeat center center fixed;
-    background-size: cover; /* Adjust background size */
-    display: flex;
-    justify-content: center; /* Center the text */
-    align-items: center; /* Center the content vertically */
-    min-height: 100vh; /* Ensure it covers the whole viewport */
-    color: white;
+    background: url('../img/HamMobileVersion.png') no-repeat center top;
+    background-size: cover;
+    background-position-y: 10px; /* Shift image up to expose more under navbar */
   }
 
-  /* Center the 'Ham to Mars' text in the middle */
-  .site-header h1 {
-    font-size: 2.5rem;
-    text-align: center;
-    z-index: 1; /* Ensure text is above the background */
+  .main-content {
+    padding-top: 100px; /* reduce padding since image shifts */
   }
 
-  /* Menu Styles */
-  .site-header {
+  .navbar-container {
+    padding: 10px 20px;
+  }
+
+  .logo {
+    height: 50px;
+  }
+
+  .logo-title h1 {
+    font-size: 2rem;
+  }
+
+  .menu {
+    display: none;
     position: absolute;
-    top: 0;
+    top: 100%;
     left: 0;
-    width: 100%;
+    right: 0;
+    height: 300px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(12px);
+    padding: 30px 0;
+    z-index: 999;
+    transition: all 0.3s ease;
+  }
+
+  .menu.show {
+    display: flex;
+  }
+
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 25px;
+    height: 20px;
+    cursor: pointer;
     z-index: 1001;
   }
 
-  /* Hamburger menu icon */
-  .menu-toggle {
-    display: block;
-    font-size: 2rem;
-    color: white;
-    cursor: pointer;
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    z-index: 1002; /* Ensure the toggle is on top */
+  .hamburger .bar {
+    height: 3px;
+    background: white;
+    border-radius: 2px;
+    transition: all 0.3s ease;
   }
 
-  /* Semi-transparent menu */
-  .main-menu {
-    background: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
-    position: absolute;
-    top: 60px; /* Position it just below the header */
-    width: 100%;
-    height: calc(100vh - 60px); /* Make it take the rest of the screen */
-    display: none; /* Initially hidden */
-    z-index: 1000; /* Menu is below the toggle */
-    padding-top: 20px;
+  .hamburger.open .top {
+    transform: rotate(45deg) translateY(8px);
   }
 
-  .main-menu ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column; /* Stack the items vertically */
-    align-items: center;
+  .hamburger.open .middle {
+    opacity: 0;
   }
 
-  .main-menu li {
-    margin: 15px 0;
-  }
-
-  .main-menu li a {
-    color: white;
-    text-decoration: none;
-    font-size: 1.5rem;
-    padding: 15px;
-    display: block;
-    text-align: center;
-  }
-
-  .main-menu li a:hover {
-    background-color: #f9c74f;
-    color: black;
-  }
-
-  /* Toggle to display the menu when clicked */
-  .main-menu.show {
-    display: flex;
-  }
-
-  /* Adjust menu for smaller screen sizes */
-  .menu-toggle {
-    display: block;
-    font-size: 2rem;
-    color: white;
-    cursor: pointer;
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    z-index: 1002; /* Ensure the toggle is above everything else */
+  .hamburger.open .bottom {
+    transform: rotate(-45deg) translateY(-8px);
   }
 }

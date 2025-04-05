@@ -1,29 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ham to Mars</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ham2Mars</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<header class="site-header">
-  <div class="header-left">
-    <img src="img/Logo-2.png" alt="Ham to Mars Logo" class="logo" />
-    <h1>Ham to Mars</h1>
+<header class="navbar">
+  <div class="navbar-container">
+    <div class="logo-title">
+      <img src="img/Logo-2.png" alt="Ham2Mars Logo" class="logo">
+      <h1>Ham2Mars</h1>
+    </div>
+
+    <!-- Hamburger icon (mobile only) -->
+    <div class="hamburger" id="menuToggle">
+      <div class="bar top"></div>
+      <div class="bar middle"></div>
+      <div class="bar bottom"></div>
+    </div>
+
+    <!-- Desktop nav links -->
+    <nav class="menu" id="navLinks">
+      <a href="buy.html">Buy Ham</a>
+      <a href="episodes.html">Episodes</a>
+      <a href="about.html">About</a>
+    </nav>
   </div>
-  <nav class="main-menu">
-    <div class="menu-toggle" id="menuToggle">☰</div>
-    <ul id="navLinks">
-      <li><a href="about.html">About Ham</a></li>
-      <li><a href="#">Mission</a></li>
-      <li><a href="#">Gallery</a></li>
-      <li><a href="#">Contact</a></li>
-    </ul>
-  </nav>
 </header>
 
+<div class="main-content">
+  <!-- Page content goes here -->
+</div>
 
 <script src="js/app.js"></script>
 </body>
