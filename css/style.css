@@ -323,6 +323,8 @@ body {
 
 .item-3 h3,
 .about-left h3 {
+  font-family: PriceDown;
+  font-size: 2rem;
   text-align: center;
   color: #ffcc00;
   margin-bottom: 10px;
