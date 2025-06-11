@@ -755,7 +755,7 @@
         // Get the most liquid pair
         const mainPair = data.pairs[0];
         const price = parseFloat(mainPair.priceUsd).toFixed(6);
-        const marketCap = (parseFloat(mainPair.fdv) / 1000000).toFixed(2);
+        const marketCap = (parseFloat(mainPair.fdv) / 1000000).toFixed(3);
 
         document.getElementById('tokenPrice').textContent = `$${price}`;
         document.getElementById('marketCap').textContent = `$${marketCap}M`;
