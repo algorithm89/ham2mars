@@ -1,41 +1,816 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ham2Mars</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HAM TO MARS - MISSION CONTROL</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0a0a0a;
+      color: #00ff41;
+      font-family: 'Share Tech Mono', monospace;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Scanline effect */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+              0deg,
+              rgba(0, 0, 0, 0.15),
+              rgba(0, 0, 0, 0.15) 1px,
+              transparent 1px,
+              transparent 2px
+      );
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* Main Container */
+    .mission-control {
+      min-height: 100vh;
+      background: radial-gradient(ellipse at center, #1a1a1a 0%, #0a0a0a 100%);
+      position: relative;
+      padding: 20px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 20px 0;
+      border-bottom: 2px solid #00ff41;
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    .header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3em;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-shadow: 0 0 20px #00ff41;
+      animation: flicker 2s infinite;
+    }
+
+    .header .subtitle {
+      font-size: 1.2em;
+      color: #ff6b35;
+      margin-top: 10px;
+    }
+
+    /* Control Panel Grid */
+    .control-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      gap: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Panel Styles */
+    .panel {
+      background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+      border: 2px solid #00ff41;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow:
+              inset 0 0 20px rgba(0, 255, 65, 0.1),
+              0 0 20px rgba(0, 255, 65, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #00ff41, transparent, #00ff41);
+      opacity: 0;
+      animation: borderGlow 3s linear infinite;
+      z-index: -1;
+    }
+
+    .panel-header {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 1.2em;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      color: #ff6b35;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-led {
+      width: 10px;
+      height: 10px;
+      background: #00ff41;
+      border-radius: 50%;
+      animation: blink 1s infinite;
+      box-shadow: 0 0 10px #00ff41;
+    }
+
+    /* Main Video Screen */
+    .main-screen {
+      grid-column: 2;
+      min-height: 400px;
+      position: relative;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid #00ff41;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+
+    .main-screen iframe {
+      width: 100%;
+      height: 100%;
+      min-height: 400px;
+    }
+
+    .screen-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: repeating-linear-gradient(
+              0deg,
+              transparent,
+              transparent 2px,
+              rgba(0, 255, 65, 0.03) 2px,
+              rgba(0, 255, 65, 0.03) 4px
+      );
+      pointer-events: none;
+    }
+
+    /* Left Panel - Token Status */
+    .mission-status {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .status-item {
+      padding: 15px;
+      background: rgba(0, 255, 65, 0.05);
+      border: 1px solid rgba(0, 255, 65, 0.3);
+      border-radius: 5px;
+    }
+
+    .status-item h4 {
+      color: #ff6b35;
+      margin-bottom: 10px;
+      font-size: 0.9em;
+      text-transform: uppercase;
+    }
+
+    .status-value {
+      font-size: 1.5em;
+      font-weight: bold;
+      text-shadow: 0 0 10px currentColor;
+    }
+
+    .status-value.active {
+      color: #00ff41;
+    }
+
+    .status-value.warning {
+      color: #ffcc00;
+    }
+
+    .status-value.critical {
+      color: #ff3333;
+      animation: criticalBlink 0.5s infinite;
+    }
+
+    /* Right Panel - Episode Controls */
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .toggle-switch {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      background: rgba(255, 107, 53, 0.1);
+      border: 1px solid #ff6b35;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .toggle-switch:hover {
+      background: rgba(255, 107, 53, 0.2);
+      box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+    }
+
+    .toggle-switch.active {
+      background: rgba(0, 255, 65, 0.2);
+      border-color: #00ff41;
+    }
+
+    .switch-indicator {
+      width: 40px;
+      height: 20px;
+      background: #333;
+      border-radius: 10px;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .switch-indicator::after {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: #ff6b35;
+      border-radius: 50%;
+      top: 1px;
+      left: 1px;
+      transition: all 0.3s;
+    }
+
+    .toggle-switch.active .switch-indicator {
+      background: rgba(0, 255, 65, 0.3);
+    }
+
+    .toggle-switch.active .switch-indicator::after {
+      background: #00ff41;
+      left: 21px;
+      box-shadow: 0 0 10px #00ff41;
+    }
+
+    /* Bottom Panel - Countdown Timer */
+    .bottom-panel {
+      grid-column: 1 / -1;
+      margin-top: 20px;
+    }
+
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      font-size: 2em;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+    }
+
+    .countdown-item {
+      text-align: center;
+    }
+
+    .countdown-value {
+      font-size: 2em;
+      color: #ff6b35;
+      text-shadow: 0 0 20px currentColor;
+      display: block;
+    }
+
+    .countdown-label {
+      font-size: 0.5em;
+      color: #00ff41;
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+
+    /* Radar Screen */
+    .radar {
+      width: 200px;
+      height: 200px;
+      margin: 20px auto;
+      position: relative;
+      background: radial-gradient(circle, transparent 30%, rgba(0, 255, 65, 0.1) 30%);
+      border: 2px solid #00ff41;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    .radar::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: 2px;
+      background: rgba(0, 255, 65, 0.3);
+      transform: translate(-50%, -50%);
+    }
+
+    .radar::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 2px;
+      height: 100%;
+      background: rgba(0, 255, 65, 0.3);
+      transform: translate(-50%, -50%);
+    }
+
+    .radar-sweep {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 50%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #00ff41);
+      transform-origin: left center;
+      animation: radarSweep 4s linear infinite;
+    }
+
+    .radar-dot {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #ff6b35;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #ff6b35;
+      animation: radarPulse 2s infinite;
+    }
+
+    /* Gallery Panel */
+    .gallery-panel {
+      grid-column: 1 / -1;
+      margin-top: 20px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .gallery-item {
+      aspect-ratio: 1;
+      background: #000;
+      border: 2px solid #ff6b35;
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(255, 107, 53, 0.7);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gallery-item .placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+      color: #ff6b35;
+      font-size: 3em;
+    }
+
+    /* Buy Section */
+    .buy-section {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 40px;
+      background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(255, 140, 66, 0.1));
+      border-radius: 15px;
+      margin-top: 30px;
+    }
+
+    .buy-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .buy-btn {
+      background: linear-gradient(135deg, #ff6b35, #ff8c42);
+      color: #000;
+      border: none;
+      padding: 15px 40px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 1.1em;
+      border-radius: 30px;
+      cursor: pointer;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s;
+      box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+    }
+
+    .buy-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 30px rgba(255, 107, 53, 0.8);
+    }
+
+    .contract-address {
+      margin-top: 20px;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid #00ff41;
+      border-radius: 10px;
+      font-family: 'Share Tech Mono', monospace;
+      word-break: break-all;
+    }
+
+    /* Audio Controls */
+    .audio-controls {
+      position: fixed;
+      top: 30px;
+      right: 30px;
+      display: flex;
+      gap: 10px;
+      z-index: 100;
+    }
+
+    .audio-btn {
+      width: 40px;
+      height: 40px;
+      background: rgba(0, 255, 65, 0.1);
+      border: 2px solid #00ff41;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+
+    .audio-btn:hover {
+      background: rgba(0, 255, 65, 0.3);
+      box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+    }
+
+    /* Animations */
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    @keyframes criticalBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    @keyframes radarSweep {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes radarPulse {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(3); opacity: 0; }
+    }
+
+    @keyframes borderGlow {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .control-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .main-screen {
+        grid-column: 1;
+        min-height: 300px;
+      }
+
+      .header h1 {
+        font-size: 2em;
+      }
+    }
+  </style>
 </head>
 <body>
-
-<header class="navbar">
-  <div class="navbar-container">
-    <div class="logo-title">
-      <img src="img/Logo-2.png" alt="Ham2Mars Logo" class="logo">
-      <h1>Ham2Mars</h1>
-    </div>
-
-    <!-- Hamburger icon (mobile only) -->
-    <div class="hamburger" id="menuToggle">
-      <div class="bar top"></div>
-      <div class="bar middle"></div>
-      <div class="bar bottom"></div>
-    </div>
-
-    <!-- Desktop nav links -->
-    <nav class="menu" id="navLinks">
-      <a href="index.html">Home</a>
-      <a href="buy.html">Buy Ham</a>
-      <a href="episodes.html">Episodes</a>
-      <a href="about.html">About</a>
-    </nav>
+<div class="mission-control">
+  <!-- Header -->
+  <div class="header">
+    <h1>HAM TO MARS</h1>
+    <div class="subtitle">HAM JR. SPACE MISSION • COMMUNITY TAKEOVER</div>
   </div>
-</header>
 
-<div class="main-content">
-  <!-- Page content goes here -->
+  <!-- Audio Controls -->
+  <div class="audio-controls">
+    <div class="audio-btn" onclick="toggleSound()">
+      <span id="soundIcon">🔊</span>
+    </div>
+  </div>
+
+  <!-- Main Control Grid -->
+  <div class="control-grid">
+    <!-- Left Panel - Token Status -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="status-led"></span>
+        TOKEN STATUS
+      </div>
+      <div class="mission-status">
+        <div class="status-item">
+          <h4>Token Price</h4>
+          <div class="status-value active" id="tokenPrice">$Loading...</div>
+        </div>
+        <div class="status-item">
+          <h4>Market Cap</h4>
+          <div class="status-value active" id="marketCap">Loading...</div>
+        </div>
+        <div class="status-item">
+          <h4>Holders</h4>
+          <div class="status-value active">1,847</div>
+        </div>
+        <div class="status-item">
+          <h4>Community Power</h4>
+          <div class="status-value warning">GROWING</div>
+        </div>
+      </div>
+
+      <!-- Radar -->
+      <div class="radar">
+        <div class="radar-sweep"></div>
+        <div class="radar-dot" style="top: 30%; left: 60%;"></div>
+        <div class="radar-dot" style="top: 70%; left: 40%;"></div>
+      </div>
+    </div>
+
+    <!-- Center - Main Video Screen -->
+    <div class="main-screen panel">
+      <div class="screen-overlay"></div>
+      <iframe width="100%" height="100%"
+              src="https://www.youtube.com/embed/vT5xjZKGUSA?autoplay=1&mute=1&loop=1&playlist=vT5xjZKGUSA"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>
+      </iframe>
+    </div>
+
+    <!-- Right Panel - Episode Controls -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="status-led"></span>
+        EPISODE CONTROLS
+      </div>
+      <div class="controls">
+        <div class="toggle-switch active" onclick="toggleSwitch(this)">
+          <span>EPISODE 1 LIVE</span>
+          <div class="switch-indicator"></div>
+        </div>
+        <div class="toggle-switch" onclick="toggleSwitch(this)">
+          <span>EPISODE 2</span>
+          <div class="switch-indicator"></div>
+        </div>
+        <div class="toggle-switch" onclick="toggleSwitch(this)">
+          <span>EPISODE 3</span>
+          <div class="switch-indicator"></div>
+        </div>
+        <div class="toggle-switch active" onclick="toggleSwitch(this)">
+          <span>COMIC SERIES</span>
+          <div class="switch-indicator"></div>
+        </div>
+        <div class="toggle-switch active" onclick="toggleSwitch(this)">
+          <span>COMMUNITY</span>
+          <div class="switch-indicator"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Panel - Countdown Timer -->
+  <div class="panel bottom-panel">
+    <div class="panel-header">
+      <span class="status-led"></span>
+      TIME TO MARS ARRIVAL
+    </div>
+    <div class="countdown">
+      <div class="countdown-item">
+        <span class="countdown-value" id="days">287</span>
+        <span class="countdown-label">Days</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-value" id="hours">14</span>
+        <span class="countdown-label">Hours</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-value" id="minutes">52</span>
+        <span class="countdown-label">Minutes</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-value" id="seconds">17</span>
+        <span class="countdown-label">Seconds</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gallery Section -->
+  <div class="panel gallery-panel">
+    <div class="panel-header">
+      <span class="status-led"></span>
+      HAM JR. VISUAL ARCHIVES
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <div class="placeholder">🚀</div>
+        <!-- Add your image: <img src="image1.jpg" alt="Ham Jr with crew"> -->
+      </div>
+      <div class="gallery-item">
+        <div class="placeholder">🐵</div>
+        <!-- Add your image: <img src="image2.jpg" alt="Bon Voyage party"> -->
+      </div>
+      <div class="gallery-item">
+        <div class="placeholder">🎉</div>
+        <!-- Add your image: <img src="image3.jpg" alt="Launch sequence"> -->
+      </div>
+      <div class="gallery-item">
+        <div class="placeholder">🌟</div>
+        <!-- Add your image: <img src="image4.jpg" alt="Space Ham X"> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Buy Section -->
+  <div class="panel buy-section">
+    <h2 style="font-family: 'Orbitron', sans-serif; font-size: 2em; margin-bottom: 10px; color: #ff6b35;">
+      JOIN THE MISSION
+    </h2>
+    <p style="font-size: 1.2em; margin-bottom: 20px;">
+      Get $HAM and join Ham Jr.'s journey to Mars!
+    </p>
+    <div class="buy-buttons">
+      <a href="#" class="buy-btn">BUY ON UNISWAP</a>
+      <a href="#" class="buy-btn">BUY ON DEXTOOLS</a>
+      <a href="#" class="buy-btn">TELEGRAM</a>
+    </div>
+    <div class="contract-address">
+      <strong>Contract:</strong> 8Hn8fkMmSbwors9oh7i67sVfgbCxAabgn1E9WcMjpump
+    </div>
+  </div>
 </div>
 
-<script src="js/app.js"></script>
+<!-- Audio for space sounds -->
+<audio id="spaceAudio" loop>
+  <source src="https://cdn.freesound.org/previews/341/341984_5123448-lq.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  // Toggle switches
+  function toggleSwitch(element) {
+    element.classList.toggle('active');
+  }
+
+  // Countdown timer
+  function updateCountdown() {
+    const seconds = document.getElementById('seconds');
+    const minutes = document.getElementById('minutes');
+    const hours = document.getElementById('hours');
+    const days = document.getElementById('days');
+
+    let s = parseInt(seconds.textContent);
+    let m = parseInt(minutes.textContent);
+    let h = parseInt(hours.textContent);
+    let d = parseInt(days.textContent);
+
+    s--;
+    if (s < 0) {
+      s = 59;
+      m--;
+      if (m < 0) {
+        m = 59;
+        h--;
+        if (h < 0) {
+          h = 23;
+          d--;
+        }
+      }
+    }
+
+    seconds.textContent = s.toString().padStart(2, '0');
+    minutes.textContent = m.toString().padStart(2, '0');
+    hours.textContent = h.toString().padStart(2, '0');
+    days.textContent = d;
+  }
+
+  setInterval(updateCountdown, 1000);
+
+  // REAL-TIME TOKEN PRICE FETCHER (ONLY ONE!)
+  async function fetchTokenPrice() {
+    try {
+      const tokenAddress = '8Hn8fkMmSbwors9oh7i67sVfgbCxAabgn1E9WcMjpump';
+      const response = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${tokenAddress}`);
+      const data = await response.json();
+
+      if (data.pairs && data.pairs.length > 0) {
+        // Get the most liquid pair
+        const mainPair = data.pairs[0];
+        const price = parseFloat(mainPair.priceUsd).toFixed(6);
+        const marketCap = (parseFloat(mainPair.fdv) / 1000000).toFixed(2);
+
+        document.getElementById('tokenPrice').textContent = `$${price}`;
+        document.getElementById('marketCap').textContent = `$${marketCap}M`;
+
+        // Update status based on price change
+        const priceChange = mainPair.priceChange.h24;
+        const priceElement = document.getElementById('tokenPrice');
+        if (priceChange > 0) {
+          priceElement.className = 'status-value active';
+        } else if (priceChange < -10) {
+          priceElement.className = 'status-value critical';
+        } else {
+          priceElement.className = 'status-value warning';
+        }
+
+        console.log('✅ Real price updated:', price, 'Market cap:', marketCap);
+      }
+    } catch (error) {
+      console.error('❌ Error fetching price:', error);
+      document.getElementById('tokenPrice').textContent = '$Error';
+      document.getElementById('marketCap').textContent = 'Error';
+    }
+  }
+
+  // Update price every 30 seconds AND on page load
+  setInterval(fetchTokenPrice, 30000);
+  fetchTokenPrice(); // Initial fetch
+
+  // Sound toggle
+  let soundEnabled = false;
+  function toggleSound() {
+    const audio = document.getElementById('spaceAudio');
+    const icon = document.getElementById('soundIcon');
+
+    if (soundEnabled) {
+      audio.pause();
+      icon.textContent = '🔇';
+    } else {
+      audio.play().catch(e => console.log('Audio play failed:', e));
+      icon.textContent = '🔊';
+    }
+    soundEnabled = !soundEnabled;
+  }
+
+  // Random status updates (ONLY for Community Power, NOT for price!)
+  function randomStatusUpdate() {
+    const statuses = ['OPTIMAL', 'STABLE', 'EXCELLENT', 'GROWING'];
+    const communityElement = document.querySelector('.mission-status .status-item:last-child .status-value');
+    const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+
+    if (Math.random() > 0.8) {
+      communityElement.textContent = randomStatus;
+    }
+  }
+
+  setInterval(randomStatusUpdate, 10000);
+
+  // Add floating animation to radar dots
+  document.querySelectorAll('.radar-dot').forEach((dot, index) => {
+    dot.style.animationDelay = `${index * 0.5}s`;
+  });
+</script>
 </body>
 </html>
