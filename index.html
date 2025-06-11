@@ -598,26 +598,25 @@
         EPISODE CONTROLS
       </div>
       <div class="controls">
-        <div class="toggle-switch active" onclick="toggleSwitch(this)">
+        <div class="toggle-switch active" onclick="toggleSwitch(this)"
+             id="episode1container">
           <span>EPISODE 1 LIVE</span>
           <div class="switch-indicator"></div>
         </div>
-        <div class="toggle-switch" onclick="toggleSwitch(this)">
+
+        <div class="toggle-switch" onclick="toggleSwitch(this)"
+             id="episode2container">
           <span>EPISODE 2</span>
           <div class="switch-indicator"></div>
         </div>
-        <div class="toggle-switch" onclick="toggleSwitch(this)">
+
+        <div class="toggle-switch" onclick="toggleSwitch(this)"
+             id="episode3container">
           <span>EPISODE 3</span>
           <div class="switch-indicator"></div>
         </div>
-        <div class="toggle-switch active" onclick="toggleSwitch(this)">
-          <span>COMIC SERIES</span>
-          <div class="switch-indicator"></div>
-        </div>
-        <div class="toggle-switch active" onclick="toggleSwitch(this)">
-          <span>COMMUNITY</span>
-          <div class="switch-indicator"></div>
-        </div>
+
+
       </div>
     </div>
   </div>
@@ -706,9 +705,35 @@
 
 <script>
   // Toggle switches
+  var selectedEpisode = 1;
+
+  const episodeVideos = {
+    1: "https://www.youtube.com/embed/vT5xjZKGUSA?autoplay=1&mute=1&loop=1&playlist=vT5xjZKGUSA",
+    2: "https://www.youtube.com",
+    3: "https://www.youtube.com"
+  };
+
   function toggleSwitch(element) {
-    element.classList.toggle('active');
+    const id = element.id.toLowerCase();
+    const match = id.match(/episode(\d+)container/);
+    if (!match) return;
+
+    const clickedEpisode = parseInt(match[1], 10);
+
+    if (selectedEpisode !== clickedEpisode) {
+      // Toggle old episode off
+      document.getElementById(`episode${selectedEpisode}container`).classList.remove("active");
+
+      // Activate the new one
+      selectedEpisode = clickedEpisode;
+      element.classList.add("active");
+
+      // Update the video source
+      const iframe = document.querySelector(".main-screen iframe");
+      iframe.src = episodeVideos[selectedEpisode];
+    }
   }
+
 
   // Countdown timer
   function updateCountdown() {
