@@ -564,7 +564,7 @@
         </div>
         <div class="status-item">
           <h4>Holders</h4>
-          <div class="status-value active">1,847</div>
+          <div class="status-value active" id="holders">1,847</div>
         </div>
         <div class="status-item">
           <h4>Community Power</h4>
@@ -843,6 +843,68 @@
   document.querySelectorAll('.radar-dot').forEach((dot, index) => {
     dot.style.animationDelay = `${index * 0.5}s`;
   });
+
+
+    async function getTokenHolders() {
+    const mint = "8Hn8fkMmSbwors9oh7i67sVfgbCxAabgn1E9WcMjpump";
+    const apiKey = "67ea3751-bb8a-4476-acda-7f8b6dee2d36";
+    const holdersElement = document.getElementById("holders");
+
+    const holders = new Set();
+    let page = 1;
+
+    try {
+    while (true) {
+    const response = await fetch(
+    `https://mainnet.helius-rpc.com/?api-key=${apiKey}`,
+  {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: "get-token-accounts",
+    method: "getTokenAccounts",
+    params: {
+    mint: mint,
+    page: page,
+    limit: 1000,
+    displayOptions: {},
+  },
+  }),
+  }
+    );
+
+    const data = await response.json();
+    const accounts = data.result?.token_accounts || [];
+
+    if (accounts.length === 0) break;
+
+    for (const acc of accounts) {
+    holders.add(acc.owner);
+  }
+
+    page++;
+  }
+
+    // ✅ Inject holder count into your UI
+    if (holdersElement) {
+    holdersElement.textContent = holders.size.toLocaleString();
+  }
+
+    console.log(`✅ Total unique holders: ${holders.size}`);
+  } catch (err) {
+    console.error("❌ Error fetching holders:", err);
+    if (holdersElement) {
+    holdersElement.textContent = "N/A";
+  }
+  }
+  }
+
+    // Run on load and every 60 seconds
+    getTokenHolders();
+    setInterval(getTokenHolders, 60000);
+
+
 </script>
 </body>
 </html>
