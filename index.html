@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -485,6 +484,7 @@
       display: inline-block;
       transition: all 0.3s;
       box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+      flex: 1 1 200px;
     }
 
     .buy-btn:hover {
@@ -664,7 +664,7 @@
   <!-- Audio Controls -->
   <div class="audio-controls">
     <div class="audio-btn" onclick="toggleSound()">
-      <span id="soundIcon">🔊</span>
+      <span id="soundIcon">🔇</span>
     </div>
   </div>
 
@@ -704,16 +704,9 @@
     </div>
 
     <!-- Center - Main Video Screen -->
-    <div class="main-screen panel" id="player">
+    <div class="main-screen panel">
+      <div id="player"></div>
       <div class="screen-overlay"></div>
-      <iframe
-              width="100%"
-              height="100%"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-      >
-      </iframe>
     </div>
 
     <!-- Right Panel - Episode Controls -->
@@ -844,14 +837,31 @@
       <a
               href="https://raydium.io/swap/?inputMint=sol&outputMint=8Hn8fkMmSbwors9oh7i67sVfgbCxAabgn1E9WcMjpump"
               class="buy-btn"
+              target="_blank"
+              rel="noopener noreferrer"
       >BUY ON RAYDIUM</a
       >
       <a
               href="https://dexscreener.com/solana/8Hn8fkMmSbwors9oh7i67sVfgbCxAabgn1E9WcMjpump"
               class="buy-btn"
+              target="_blank"
+              rel="noopener noreferrer"
       >DEXSCREENER</a
       >
-      <a href="https://t.me/hamtomarscom" class="buy-btn">TELEGRAM</a>
+      <a
+              href="https://t.me/hamtomarscom"
+              class="buy-btn"
+              target="_blank"
+              rel="noopener noreferrer"
+      >TELEGRAM</a
+      >
+      <a
+              href="https://x.com/hamtomars"
+              class="buy-btn"
+              target="_blank"
+              rel="noopener noreferrer"
+      >X</a
+      >
     </div>
     <div class="contract-address">
       <strong>Contract:</strong>
@@ -861,7 +871,7 @@
 </div>
 
 <!-- Audio for background music -->
-<audio id="backgroundAudio" loop autoplay>
+<audio id="backgroundAudio" loop>
   <source src="img/valentinsosnitskiy_guitar_space.mp3" type="audio/mpeg" />
 </audio>
 
@@ -870,6 +880,7 @@
 
 <script>
   let player;
+  let playerReady = false;
 
   // Toggle switches
   var selectedEpisode = 1;
@@ -881,13 +892,13 @@
 
   const episodeVideoIds = {
     1: "vT5xjZKGUSA",
-    2: "X",
+    2: "X", // replace with real IDs
     3: "X",
   };
 
   function onYouTubeIframeAPIReady() {
     player = new YT.Player("player", {
-      videoId: "vT5xjZKGUSA", // episode 1
+      videoId: episodeVideoIds[1], // episode 1
       playerVars: {
         autoplay: 0, // 1 to start playback automatically
         mute: 0, // YouTube only allows autoplay if muted! (1 for mute)
@@ -900,7 +911,8 @@
   }
 
   function onPlayerReady(event) {
-    // Optional: do something when ready
+    playerReady = true;
+    console.log("✅ YouTube Player is ready.");
   }
 
   function onPlayerStateChange(event) {
@@ -915,6 +927,11 @@
   }
 
   function toggleSwitch(element) {
+    if (!playerReady) {
+      console.warn("Player not ready yet. Please wait.");
+      return;
+    }
+
     const id = element.id.toLowerCase();
     const match = id.match(/episode(\d+)container/);
     if (!match) return;
@@ -1024,7 +1041,7 @@
   }
 
   // Sound toggle
-  let soundEnabled = true;
+  let soundEnabled = false;
   function toggleSound() {
     const audio = document.getElementById("backgroundAudio");
     const icon = document.getElementById("soundIcon");
@@ -1032,16 +1049,17 @@
     if (soundEnabled) {
       audio.pause();
       icon.textContent = "🔇";
-      player.mute();
+      if (playerReady) player.mute();
     } else {
       // Only play audio if video is not being watched
-      if (player) {
-        if (player.getPlayerState() !== YT.PlayerState.PLAYING) {
-          audio.play().catch((e) => console.log("Audio play failed:", e));
-        }
+      if (
+              playerReady &&
+              player.getPlayerState() !== YT.PlayerState.PLAYING
+      ) {
+        audio.play().catch((e) => console.log("Audio play failed:", e));
       }
       icon.textContent = "🔊";
-      player.unMute();
+      if (playerReady) player.unMute();
     }
     soundEnabled = !soundEnabled;
   }
