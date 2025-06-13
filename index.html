@@ -2,11 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HAM TO MARS - MISSION CONTROL</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
+    @import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap");
 
     * {
       margin: 0;
@@ -17,7 +17,7 @@
     body {
       background: #0a0a0a;
       color: #00ff41;
-      font-family: 'Share Tech Mono', monospace;
+      font-family: "Share Tech Mono", monospace;
       overflow-x: hidden;
       position: relative;
     }
@@ -44,7 +44,11 @@
     /* Main Container */
     .mission-control {
       min-height: 100vh;
-      background: radial-gradient(ellipse at center, #1a1a1a 0%, #0a0a0a 100%);
+      background: radial-gradient(
+              ellipse at center,
+              #1a1a1a 0%,
+              #0a0a0a 100%
+      );
       position: relative;
       padding: 20px;
     }
@@ -59,7 +63,7 @@
     }
 
     .header h1 {
-      font-family: 'Orbitron', sans-serif;
+      font-family: "Orbitron", sans-serif;
       font-size: 3em;
       font-weight: 900;
       letter-spacing: 0.1em;
@@ -88,9 +92,8 @@
       border: 2px solid #00ff41;
       border-radius: 10px;
       padding: 20px;
-      box-shadow:
-              inset 0 0 20px rgba(0, 255, 65, 0.1),
-              0 0 20px rgba(0, 255, 65, 0.3);
+      box-shadow: inset 0 0 20px rgba(0, 255, 65, 0.1),
+      0 0 20px rgba(0, 255, 65, 0.3);
       position: relative;
       overflow: hidden;
     }
@@ -109,7 +112,7 @@
     }
 
     .panel-header {
-      font-family: 'Orbitron', sans-serif;
+      font-family: "Orbitron", sans-serif;
       font-weight: 700;
       font-size: 1.2em;
       margin-bottom: 15px;
@@ -133,6 +136,8 @@
     .main-screen {
       grid-column: 2;
       min-height: 400px;
+      height: 100%;
+      width: 100%;
       position: relative;
       background: #000;
       display: flex;
@@ -212,6 +217,33 @@
       gap: 20px;
     }
 
+    .toggle-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .toggle-wrapper:hover::after {
+      opacity: 1;
+    }
+
+    .toggle-wrapper::after {
+      content: "Coming Soon";
+      position: absolute;
+      bottom: 110%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #222;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 0.75em;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 1000;
+      pointer-events: none;
+    }
+
     .toggle-switch {
       display: flex;
       align-items: center;
@@ -222,6 +254,19 @@
       border-radius: 5px;
       cursor: pointer;
       transition: all 0.3s;
+    }
+
+    .toggle-switch.disabled {
+      position: relative;
+      opacity: 0.4;
+      pointer-events: none;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px dashed #888;
+    }
+
+    .toggle-switch.disabled .switch-indicator::after {
+      background: #888;
+      box-shadow: none;
     }
 
     .toggle-switch:hover {
@@ -276,7 +321,7 @@
       justify-content: center;
       gap: 30px;
       font-size: 2em;
-      font-family: 'Orbitron', sans-serif;
+      font-family: "Orbitron", sans-serif;
       font-weight: 700;
     }
 
@@ -304,7 +349,11 @@
       height: 200px;
       margin: 20px auto;
       position: relative;
-      background: radial-gradient(circle, transparent 30%, rgba(0, 255, 65, 0.1) 30%);
+      background: radial-gradient(
+              circle,
+              transparent 30%,
+              rgba(0, 255, 65, 0.1) 30%
+      );
       border: 2px solid #00ff41;
       border-radius: 50%;
       overflow: hidden;
@@ -404,7 +453,11 @@
       grid-column: 1 / -1;
       text-align: center;
       padding: 40px;
-      background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(255, 140, 66, 0.1));
+      background: linear-gradient(
+              135deg,
+              rgba(255, 107, 53, 0.1),
+              rgba(255, 140, 66, 0.1)
+      );
       border-radius: 15px;
       margin-top: 30px;
     }
@@ -422,7 +475,7 @@
       color: #000;
       border: none;
       padding: 15px 40px;
-      font-family: 'Orbitron', sans-serif;
+      font-family: "Orbitron", sans-serif;
       font-weight: 700;
       font-size: 1.1em;
       border-radius: 30px;
@@ -445,7 +498,7 @@
       background: rgba(0, 0, 0, 0.5);
       border: 1px solid #00ff41;
       border-radius: 10px;
-      font-family: 'Share Tech Mono', monospace;
+      font-family: "Share Tech Mono", monospace;
       word-break: break-all;
     }
 
@@ -492,7 +545,7 @@
 
       .countdown {
         flex-direction: row; /* keep it horizontal */
-        flex-wrap: wrap;     /* allow wrapping if needed */
+        flex-wrap: wrap; /* allow wrapping if needed */
         justify-content: center;
         gap: 20px;
         font-size: 1.2em;
@@ -514,38 +567,73 @@
 
     /* Animations */
     @keyframes flicker {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.8; }
+      0%,
+      100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.8;
+      }
     }
 
     @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
+      0%,
+      100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.3;
+      }
     }
 
     @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
     }
 
     @keyframes criticalBlink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+      0%,
+      100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
     }
 
     @keyframes radarSweep {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     @keyframes radarPulse {
-      0% { transform: scale(1); opacity: 1; }
-      100% { transform: scale(3); opacity: 0; }
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(3);
+        opacity: 0;
+      }
     }
 
     @keyframes borderGlow {
-      0%, 100% { opacity: 0; }
-      50% { opacity: 0.5; }
+      0%,
+      100% {
+        opacity: 0;
+      }
+      50% {
+        opacity: 0.5;
+      }
     }
 
     /* Responsive */
@@ -591,7 +679,7 @@
       <div class="mission-status">
         <div class="status-item">
           <h4>Token Price</h4>
-          <div class="status-value active" id="tokenPrice">$Loading...</div>
+          <div class="status-value active" id="tokenPrice">Loading...</div>
         </div>
         <div class="status-item">
           <h4>Market Cap</h4>
@@ -599,7 +687,7 @@
         </div>
         <div class="status-item">
           <h4>Holders</h4>
-          <div class="status-value active" id="holders">1,847</div>
+          <div class="status-value active" id="holders">Loading...</div>
         </div>
         <div class="status-item">
           <h4>Community Power</h4>
@@ -610,19 +698,21 @@
       <!-- Radar -->
       <div class="radar">
         <div class="radar-sweep"></div>
-        <div class="radar-dot" style="top: 30%; left: 60%;"></div>
-        <div class="radar-dot" style="top: 70%; left: 40%;"></div>
+        <div class="radar-dot" style="top: 30%; left: 60%"></div>
+        <div class="radar-dot" style="top: 70%; left: 40%"></div>
       </div>
     </div>
 
     <!-- Center - Main Video Screen -->
-    <div class="main-screen panel">
+    <div class="main-screen panel" id="player">
       <div class="screen-overlay"></div>
-      <iframe width="100%" height="100%"
-              src="https://www.youtube.com/embed/vT5xjZKGUSA?autoplay=1&mute=1&loop=1&playlist=vT5xjZKGUSA"
+      <iframe
+              width="100%"
+              height="100%"
               frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen>
+              allowfullscreen
+      >
       </iframe>
     </div>
 
@@ -633,25 +723,45 @@
         EPISODE CONTROLS
       </div>
       <div class="controls">
-        <div class="toggle-switch active" onclick="toggleSwitch(this)"
-             id="episode1container">
+        <div
+                class="toggle-switch active"
+                onclick="toggleSwitch(this)"
+                id="episode1container"
+        >
           <span>EPISODE 1 LIVE</span>
           <div class="switch-indicator"></div>
         </div>
 
-        <div class="toggle-switch" onclick="toggleSwitch(this)"
-             id="episode2container">
+        <div
+                class="toggle-switch"
+                onclick="toggleSwitch(this)"
+                id="episode2container"
+        >
           <span>EPISODE 2</span>
           <div class="switch-indicator"></div>
         </div>
 
-        <div class="toggle-switch" onclick="toggleSwitch(this)"
-             id="episode3container">
-          <span>EPISODE 3</span>
-          <div class="switch-indicator"></div>
+        <div class="toggle-wrapper">
+          <div
+                  class="toggle-switch disabled"
+                  onclick="toggleSwitch(this)"
+                  id="episode3container"
+          >
+            <span>EPISODE 3</span>
+            <div class="switch-indicator"></div>
+          </div>
         </div>
 
-
+        <div class="toggle-wrapper">
+          <div
+                  class="toggle-switch disabled"
+                  onclick="toggleSwitch(this)"
+                  id="episode4container"
+          >
+            <span>EPISODE 4</span>
+            <div class="switch-indicator"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -691,62 +801,118 @@
     <div class="gallery-grid">
       <div class="gallery-item">
         <div class="placeholder">
-          <img src="img/AboutHam.jpg" alt="Ham Jr with crew">
+          <img src="img/AboutHam.jpg" alt="Ham Jr with crew" />
         </div>
       </div>
 
       <div class="gallery-item">
         <div class="placeholder">
-          <img src="img/ham2mars.jpg" alt="Bon Voyage party">
+          <img src="img/ham2mars.jpg" alt="Bon Voyage party" />
         </div>
       </div>
 
       <div class="gallery-item">
         <div class="placeholder">
-          <img src="img/childmonkey.jpg" alt="Launch sequence">
+          <img src="img/childmonkey.jpg" alt="Launch sequence" />
         </div>
       </div>
 
       <div class="gallery-item">
-        <div class="placeholder"><img src="img/HamPortrait.jpg" alt="Space Ham X"> </div>
+        <div class="placeholder">
+          <img src="img/HamPortrait.jpg" alt="Space Ham X" />
+        </div>
       </div>
     </div>
-
   </div>
 
   <!-- Buy Section -->
   <div class="panel buy-section">
-    <h2 style="font-family: 'Orbitron', sans-serif; font-size: 2em; margin-bottom: 10px; color: #ff6b35;">
+    <h2
+            style="
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: #ff6b35;
+          "
+    >
       JOIN THE MISSION
     </h2>
-    <p style="font-size: 1.2em; margin-bottom: 20px;">
+    <p style="font-size: 1.2em; margin-bottom: 20px">
       Get $HAM and join Ham Jr.'s journey to Mars!
     </p>
     <div class="buy-buttons">
-      <a href="https://raydium.io/swap/?inputMint=sol&outputMint=8Hn8fkMmSbwors9oh7i67sVfgbCxAabgn1E9WcMjpump" class="buy-btn">BUY ON RADIUM</a>
-      <a href="https://dexscreener.com/solana/8Hn8fkMmSbwors9oh7i67sVfgbCxAabgn1E9WcMjpump" class="buy-btn">BUY ON DEXSCREENER</a>
+      <a
+              href="https://raydium.io/swap/?inputMint=sol&outputMint=8Hn8fkMmSbwors9oh7i67sVfgbCxAabgn1E9WcMjpump"
+              class="buy-btn"
+      >BUY ON RAYDIUM</a
+      >
+      <a
+              href="https://dexscreener.com/solana/8Hn8fkMmSbwors9oh7i67sVfgbCxAabgn1E9WcMjpump"
+              class="buy-btn"
+      >DEXSCREENER</a
+      >
       <a href="https://t.me/hamtomarscom" class="buy-btn">TELEGRAM</a>
     </div>
     <div class="contract-address">
-      <strong>Contract:</strong> 8Hn8fkMmSbwors9oh7i67sVfgbCxAabgn1E9WcMjpump
+      <strong>Contract:</strong>
+      8Hn8fkMmSbwors9oh7i67sVfgbCxAabgn1E9WcMjpump
     </div>
   </div>
 </div>
 
-<!-- Audio for space sounds -->
-<audio id="spaceAudio" loop>
-  <source src="https://cdn.freesound.org/previews/341/341984_5123448-lq.mp3" type="audio/mpeg">
+<!-- Audio for background music -->
+<audio id="backgroundAudio" loop autoplay>
+  <source src="img/valentinsosnitskiy_guitar_space.wav" type="audio/mpeg" />
 </audio>
 
+<script src="https://www.youtube.com/iframe_api"></script>
+<!--Reference https://www.youtube.com/iframe_api to mute video on button click-->
+
 <script>
+  let player;
+
   // Toggle switches
   var selectedEpisode = 1;
-
   const episodeVideos = {
     1: "https://www.youtube.com/embed/vT5xjZKGUSA?autoplay=1&mute=1&loop=1&playlist=vT5xjZKGUSA",
     2: "https://www.youtube.com",
-    3: "https://www.youtube.com"
+    3: "https://www.youtube.com",
   };
+
+  const episodeVideoIds = {
+    1: "vT5xjZKGUSA",
+    2: "X",
+    3: "X",
+  };
+
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player("player", {
+      videoId: "vT5xjZKGUSA", // episode 1
+      playerVars: {
+        autoplay: 0, // 1 to start playback automatically
+        mute: 0, // YouTube only allows autoplay if muted! (1 for mute)
+      },
+      events: {
+        onReady: onPlayerReady,
+        onStateChange: onPlayerStateChange,
+      },
+    });
+  }
+
+  function onPlayerReady(event) {
+    // Optional: do something when ready
+  }
+
+  function onPlayerStateChange(event) {
+    // play or pause the background music so it doesn't interfere with the video audio
+    if (event.data === YT.PlayerState.PLAYING) {
+      const audio = document.getElementById("backgroundAudio");
+      audio.pause();
+    } else if (soundEnabled) {
+      const audio = document.getElementById("backgroundAudio");
+      audio.play().catch((e) => console.log("Audio play failed:", e));
+    }
+  }
 
   function toggleSwitch(element) {
     const id = element.id.toLowerCase();
@@ -757,25 +923,31 @@
 
     if (selectedEpisode !== clickedEpisode) {
       // Toggle old episode off
-      document.getElementById(`episode${selectedEpisode}container`).classList.remove("active");
+      document
+              .getElementById(`episode${selectedEpisode}container`)
+              .classList.remove("active");
 
       // Activate the new one
       selectedEpisode = clickedEpisode;
       element.classList.add("active");
 
       // Update the video source
-      const iframe = document.querySelector(".main-screen iframe");
-      iframe.src = episodeVideos[selectedEpisode];
+      player.loadVideoById(episodeVideoIds[selectedEpisode]);
+
+      // scroll to make sure it's visible on mobile
+      document.getElementById("player").scrollIntoView({
+        behavior: "smooth",
+        block: "center", // or 'start', 'end', 'nearest'
+      });
     }
   }
 
-
   // Countdown timer
   function updateCountdown() {
-    const seconds = document.getElementById('seconds');
-    const minutes = document.getElementById('minutes');
-    const hours = document.getElementById('hours');
-    const days = document.getElementById('days');
+    const seconds = document.getElementById("seconds");
+    const minutes = document.getElementById("minutes");
+    const hours = document.getElementById("hours");
+    const days = document.getElementById("days");
 
     let s = parseInt(seconds.textContent);
     let m = parseInt(minutes.textContent);
@@ -796,19 +968,25 @@
       }
     }
 
-    seconds.textContent = s.toString().padStart(2, '0');
-    minutes.textContent = m.toString().padStart(2, '0');
-    hours.textContent = h.toString().padStart(2, '0');
+    seconds.textContent = s.toString().padStart(2, "0");
+    minutes.textContent = m.toString().padStart(2, "0");
+    hours.textContent = h.toString().padStart(2, "0");
     days.textContent = d;
   }
 
   setInterval(updateCountdown, 1000);
 
+  function updatePriceMarketCapHolders() {
+    fetchTokenPriceAndMarketCap();
+    getTokenHolders();
+  }
   // REAL-TIME TOKEN PRICE FETCHER (ONLY ONE!)
-  async function fetchTokenPrice() {
+  async function fetchTokenPriceAndMarketCap() {
     try {
-      const tokenAddress = '8Hn8fkMmSbwors9oh7i67sVfgbCxAabgn1E9WcMjpump';
-      const response = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${tokenAddress}`);
+      const tokenAddress = "8Hn8fkMmSbwors9oh7i67sVfgbCxAabgn1E9WcMjpump";
+      const response = await fetch(
+              `https://api.dexscreener.com/latest/dex/tokens/${tokenAddress}`
+      );
       const data = await response.json();
 
       if (data.pairs && data.pairs.length > 0) {
@@ -817,55 +995,65 @@
         const price = parseFloat(mainPair.priceUsd).toFixed(6);
         const marketCap = (parseFloat(mainPair.fdv) / 1000000).toFixed(3);
 
-
-        document.getElementById('tokenPrice').textContent = `$${price}`;
-        document.getElementById('marketCap').textContent = `$${marketCap}M`;
+        document.getElementById("tokenPrice").textContent = `$${price}`;
+        document.getElementById("marketCap").textContent = `$${marketCap}M`;
 
         // Update status based on price change
         const priceChange = mainPair.priceChange.h24;
-        const priceElement = document.getElementById('tokenPrice');
+        const priceElement = document.getElementById("tokenPrice");
         if (priceChange > 0) {
-          priceElement.className = 'status-value active';
+          priceElement.className = "status-value active";
         } else if (priceChange < -10) {
-          priceElement.className = 'status-value critical';
+          priceElement.className = "status-value critical";
         } else {
-          priceElement.className = 'status-value warning';
+          priceElement.className = "status-value warning";
         }
 
-        console.log('✅ Real price updated:', price, 'Market cap:', marketCap);
+        console.log(
+                "✅ Real price updated:",
+                price,
+                "Market cap:",
+                marketCap
+        );
       }
     } catch (error) {
-      console.error('❌ Error fetching price:', error);
-      document.getElementById('tokenPrice').textContent = '$Error';
-      document.getElementById('marketCap').textContent = 'Error';
+      console.error("❌ Error fetching price:", error);
+      document.getElementById("tokenPrice").textContent = "$Error";
+      document.getElementById("marketCap").textContent = "Error";
     }
   }
 
-  // Update price every 30 seconds AND on page load
-  setInterval(fetchTokenPrice, 30000);
-  fetchTokenPrice(); // Initial fetch
-
   // Sound toggle
-  let soundEnabled = false;
+  let soundEnabled = true;
   function toggleSound() {
-    const audio = document.getElementById('spaceAudio');
-    const icon = document.getElementById('soundIcon');
+    const audio = document.getElementById("backgroundAudio");
+    const icon = document.getElementById("soundIcon");
 
     if (soundEnabled) {
       audio.pause();
-      icon.textContent = '🔇';
+      icon.textContent = "🔇";
+      player.mute();
     } else {
-      audio.play().catch(e => console.log('Audio play failed:', e));
-      icon.textContent = '🔊';
+      // Only play audio if video is not being watched
+      if (player) {
+        if (player.getPlayerState() !== YT.PlayerState.PLAYING) {
+          audio.play().catch((e) => console.log("Audio play failed:", e));
+        }
+      }
+      icon.textContent = "🔊";
+      player.unMute();
     }
     soundEnabled = !soundEnabled;
   }
 
   // Random status updates (ONLY for Community Power, NOT for price!)
   function randomStatusUpdate() {
-    const statuses = ['OPTIMAL', 'STABLE', 'EXCELLENT', 'GROWING'];
-    const communityElement = document.querySelector('.mission-status .status-item:last-child .status-value');
-    const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+    const statuses = ["OPTIMAL", "STABLE", "EXCELLENT", "GROWING"];
+    const communityElement = document.querySelector(
+            ".mission-status .status-item:last-child .status-value"
+    );
+    const randomStatus =
+            statuses[Math.floor(Math.random() * statuses.length)];
 
     if (Math.random() > 0.8) {
       communityElement.textContent = randomStatus;
@@ -875,12 +1063,11 @@
   setInterval(randomStatusUpdate, 10000);
 
   // Add floating animation to radar dots
-  document.querySelectorAll('.radar-dot').forEach((dot, index) => {
+  document.querySelectorAll(".radar-dot").forEach((dot, index) => {
     dot.style.animationDelay = `${index * 0.5}s`;
   });
 
-
-    async function getTokenHolders() {
+  async function getTokenHolders() {
     const mint = "8Hn8fkMmSbwors9oh7i67sVfgbCxAabgn1E9WcMjpump";
     const apiKey = "67ea3751-bb8a-4476-acda-7f8b6dee2d36";
     const holdersElement = document.getElementById("holders");
@@ -889,57 +1076,55 @@
     let page = 1;
 
     try {
-    while (true) {
-    const response = await fetch(
-    `https://mainnet.helius-rpc.com/?api-key=${apiKey}`,
-  {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-    jsonrpc: "2.0",
-    id: "get-token-accounts",
-    method: "getTokenAccounts",
-    params: {
-    mint: mint,
-    page: page,
-    limit: 1000,
-    displayOptions: {},
-  },
-  }),
+      while (true) {
+        const response = await fetch(
+                `https://mainnet.helius-rpc.com/?api-key=${apiKey}`,
+                {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    jsonrpc: "2.0",
+                    id: "get-token-accounts",
+                    method: "getTokenAccounts",
+                    params: {
+                      mint: mint,
+                      page: page,
+                      limit: 1000,
+                      displayOptions: {},
+                    },
+                  }),
+                }
+        );
+
+        const data = await response.json();
+        const accounts = data.result?.token_accounts || [];
+
+        if (accounts.length === 0) break;
+
+        for (const acc of accounts) {
+          holders.add(acc.owner);
+        }
+
+        page++;
+      }
+
+      // ✅ Inject holder count into your UI
+      if (holdersElement) {
+        holdersElement.textContent = holders.size.toLocaleString();
+      }
+
+      console.log(`✅ Total unique holders: ${holders.size}`);
+    } catch (err) {
+      console.error("❌ Error fetching holders:", err);
+      if (holdersElement) {
+        holdersElement.textContent = "N/A";
+      }
+    }
   }
-    );
 
-    const data = await response.json();
-    const accounts = data.result?.token_accounts || [];
-
-    if (accounts.length === 0) break;
-
-    for (const acc of accounts) {
-    holders.add(acc.owner);
-  }
-
-    page++;
-  }
-
-    // ✅ Inject holder count into your UI
-    if (holdersElement) {
-    holdersElement.textContent = holders.size.toLocaleString();
-  }
-
-    console.log(`✅ Total unique holders: ${holders.size}`);
-  } catch (err) {
-    console.error("❌ Error fetching holders:", err);
-    if (holdersElement) {
-    holdersElement.textContent = "N/A";
-  }
-  }
-  }
-
-    // Run on load and every 60 seconds
-    getTokenHolders();
-    setInterval(getTokenHolders, 60000);
-
-
+  // Update price, market cap and holders every 30 seconds AND on page load
+  setInterval(updatePriceMarketCapHolders, 30000);
+  updatePriceMarketCapHolders(); // Initial fetch
 </script>
 </body>
 </html>
